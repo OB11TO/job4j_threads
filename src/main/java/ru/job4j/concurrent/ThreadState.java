@@ -15,12 +15,16 @@ public class ThreadState {
 
         first.start();
         second.start();
-        while (first.getState() != Thread.State.TERMINATED
-                && second.getState() != Thread.State.TERMINATED) {
-            statusThread(first);
-            statusThread(second);
+
+        try {
+            first.join();
+            second.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         System.out.println("Work of the threads is completed");
+        statusThread(first);
+        statusThread(second);
     }
 
     private static void statusThread(Thread thread) {
