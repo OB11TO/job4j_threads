@@ -1,4 +1,4 @@
-package ru.job4j.threads.threadlocal;
+package ru.job4j.threadlocal;
 
 public class FirstThread extends Thread {
 
