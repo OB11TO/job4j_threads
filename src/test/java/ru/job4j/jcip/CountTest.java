@@ -1,4 +1,4 @@
-package ru.job4j.JCIP;
+package ru.job4j.jcip;
 
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
