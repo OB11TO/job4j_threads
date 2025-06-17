@@ -1,0 +1,25 @@
+package ru.job4j.broker;
+
+import static java.util.Arrays.stream;
+
+public class Runner {
+    public static void main(String[] args) {
+        final int brokerMaxMSGs = 5;
+        final MessageBroker messageBroker = new MessageBroker(brokerMaxMSGs);
+
+        final MessageFactory messageFactory = new MessageFactory();
+
+        final Thread producingThread1 = new Thread(new MessageProducingTask(messageBroker, messageFactory,
+                brokerMaxMSGs, "Producer 1"));
+//        final Thread producingThread2 = new Thread(new MessageProducingTask(messageBroker, messageFactory,
+//                10, "Producer 2"));
+        final Thread consumingThread1 = new Thread(new MessageConsuming(messageBroker,
+                0, "Consumer 1"));
+
+        startThreads(producingThread1, consumingThread1);
+    }
+
+    private static void startThreads(final Thread... threads) {
+        stream(threads).forEach(Thread::start);
+    }
+}
