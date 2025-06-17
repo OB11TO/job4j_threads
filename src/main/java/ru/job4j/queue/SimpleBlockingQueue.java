@@ -22,8 +22,8 @@ public class SimpleBlockingQueue<T> {
         synchronized (monitor) {
             while (queue.size() >= MAX_SIZE) {
                 try {
-                    monitor.wait();
                     log.info("Waiting for {}", value);
+                    monitor.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -37,8 +37,8 @@ public class SimpleBlockingQueue<T> {
         synchronized (monitor) {
             while (queue.isEmpty()) {
                 try {
-                    monitor.wait();
                     log.info("Waiting for poll");
+                    monitor.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
