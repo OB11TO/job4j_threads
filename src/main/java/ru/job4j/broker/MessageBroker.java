@@ -1,14 +1,19 @@
 package ru.job4j.broker;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+@Slf4j
 @ThreadSafe
 public class MessageBroker {
+
+    private static final String MESSAGE_PRODUCED = "Message: {} is produced! ";
+    private static final String MESSAGE_CONSUMER = "Message: {} is consumer! ";
 
     @GuardedBy("monitor")
     private final Queue<Message> messages;
@@ -30,8 +35,9 @@ public class MessageBroker {
                     throw new RuntimeException(e);
                 }
             }
-            monitor.notifyAll();
             this.messages.add(message);
+            log.info(MESSAGE_PRODUCED, message);
+            monitor.notifyAll();
         }
     }
 
@@ -44,8 +50,10 @@ public class MessageBroker {
                     throw new RuntimeException(e);
                 }
             }
+            Message message = this.messages.poll();
+            log.info(MESSAGE_CONSUMER, message);
             monitor.notifyAll();
-            return this.messages.poll();
+            return message;
         }
     }
 

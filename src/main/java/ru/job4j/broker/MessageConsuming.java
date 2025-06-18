@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class MessageConsuming implements Runnable {
 
     private static final int SLEEP = 5;
-    private static final String MESSAGE_CONSUMER = "Message: {} is consumer! ";
 
     private final MessageBroker messageBroker;
     @Getter
@@ -29,8 +28,7 @@ public class MessageConsuming implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             TimeUnit.SECONDS.sleep(SLEEP);
-            Message message = messageBroker.consumer();
-            log.info(MESSAGE_CONSUMER, message);
+            messageBroker.consumer();
         }
     }
 }

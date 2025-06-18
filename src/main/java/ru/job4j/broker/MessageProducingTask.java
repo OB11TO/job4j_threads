@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 public class MessageProducingTask implements Runnable {
 
     private static final int SLEEP = 1;
-    private static final String MESSAGE_PRODUCED = "Message: {} is produced! ";
     private final MessageBroker messageBroker;
     private final MessageFactory messageFactory;
 
@@ -35,7 +34,6 @@ public class MessageProducingTask implements Runnable {
             Message message = messageFactory.create();
             TimeUnit.SECONDS.sleep(SLEEP);
             messageBroker.produce(message);
-            log.info(MESSAGE_PRODUCED, message);
         }
     }
 }
