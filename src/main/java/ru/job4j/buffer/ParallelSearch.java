@@ -3,9 +3,7 @@ package ru.job4j.buffer;
 import lombok.extern.slf4j.Slf4j;
 import ru.job4j.queue.SimpleBlockingQueue;
 
-import java.util.concurrent.TimeUnit;
-
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Slf4j
 public class ParallelSearch {
@@ -16,9 +14,9 @@ public class ParallelSearch {
         new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
-                        queue.offer(index);
                         try {
-                            Thread.sleep(500);
+                            queue.offer(index);
+                            MILLISECONDS.sleep(500);
                         } catch (InterruptedException e) {
                             log.error(e.getMessage(), e);
                             Thread.currentThread().interrupt();

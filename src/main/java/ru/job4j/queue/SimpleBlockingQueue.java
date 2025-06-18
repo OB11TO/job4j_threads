@@ -18,33 +18,31 @@ public class SimpleBlockingQueue<T> {
     @GuardedBy("monitor")
     private final Queue<T> queue = new LinkedList<>();
 
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (monitor) {
             while (queue.size() >= MAX_SIZE) {
-                try {
-                    log.info("Waiting for {}", value);
-                    monitor.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                log.info("Waiting for {}", value);
+                monitor.wait();
             }
             queue.offer(value);
             monitor.notifyAll();
         }
     }
 
-    public T poll() {
+    public T poll() throws InterruptedException {
         synchronized (monitor) {
             while (queue.isEmpty()) {
-                try {
-                    log.info("Waiting for poll");
-                    monitor.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                log.info("Waiting for poll");
+                monitor.wait();
             }
             monitor.notifyAll();
             return queue.poll();
+        }
+    }
+
+    public boolean isEmpty() {
+        synchronized (monitor) {
+            return queue.isEmpty();
         }
     }
 }
