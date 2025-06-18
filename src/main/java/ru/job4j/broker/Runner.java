@@ -16,7 +16,6 @@ public class Runner {
         final Thread producingThread3 = new Thread(new MessageProducing(messageBroker, messageFactory,
                 5, "Producer 3"));
 
-
         final Thread consumingThread1 = new Thread(new MessageConsuming(messageBroker,
                 0, "Consumer 1"));
         final Thread consumingThread2 = new Thread(new MessageConsuming(messageBroker,
