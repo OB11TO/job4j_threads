@@ -150,7 +150,7 @@ class SimpleBlockingQueueTest {
                             latch.countDown();
                         }
                     });
-                }
+                }, "Producer"
         );
         producer.start();
         Thread consumer = new Thread(
@@ -165,7 +165,7 @@ class SimpleBlockingQueueTest {
                             latch.countDown();
                         }
                     }
-                }
+                }, "Consumer"
         );
         consumer.start();
         try {
@@ -180,5 +180,49 @@ class SimpleBlockingQueueTest {
         assertThat(buffer).containsExactly(0, 1, 2, 3, 4);
     }
 
+    @Test
+    void whenParallelProducerAndConsumerThenAllElementsConsumed() {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        CountDownLatch latch = new CountDownLatch(2);
+        int itemCount = 5;
+        Thread producer = new Thread(() -> {
+            try {
+                for (int i = 0; i < itemCount; i++) {
+                    queue.offer(i);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                fail("Producer был прерван");
+            } finally {
+                latch.countDown();
+            }
+        }, "Producer");
 
+        Thread consumer = new Thread(() -> {
+            try {
+                for (int i = 0; i < itemCount; i++) {
+                    Integer val = queue.poll();
+                    buffer.add(val);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                fail("Consumer был прерван");
+            } finally {
+                latch.countDown();
+            }
+        }, "consumer");
+        producer.start();
+        consumer.start();
+        try {
+            boolean completed = latch.await(1, TimeUnit.SECONDS);
+            assertThat(completed)
+                    .isTrue();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            fail("Тест прерван во время ожидания latch");
+        }
+        assertThat(buffer)
+                .containsExactly(0, 1, 2, 3, 4);
+    }
 }
