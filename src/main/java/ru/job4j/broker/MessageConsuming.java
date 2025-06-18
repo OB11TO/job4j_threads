@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class MessageConsuming implements Runnable {
 
-    private static final int SLEEP = 5;
+    private static final int SLEEP = 1;
 
     private final MessageBroker messageBroker;
     @Getter
@@ -28,7 +28,7 @@ public class MessageConsuming implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             TimeUnit.SECONDS.sleep(SLEEP);
-            messageBroker.consumer();
+            messageBroker.consumer(this);
         }
     }
 }

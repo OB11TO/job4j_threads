@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class MessageProducingTask implements Runnable {
+public class MessageProducing implements Runnable {
 
     private static final int SLEEP = 1;
     private final MessageBroker messageBroker;
@@ -20,7 +20,7 @@ public class MessageProducingTask implements Runnable {
     @Getter
     private final String name;
 
-    public MessageProducingTask(MessageBroker messageBroker, final MessageFactory messageFactory, final int minimumMSGToStartProduce, final String name) {
+    public MessageProducing(MessageBroker messageBroker, final MessageFactory messageFactory, final int minimumMSGToStartProduce, final String name) {
         this.messageBroker = messageBroker;
         this.messageFactory = messageFactory;
         this.minimumMSGToStartProduce = minimumMSGToStartProduce;
@@ -33,7 +33,7 @@ public class MessageProducingTask implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
             Message message = messageFactory.create();
             TimeUnit.SECONDS.sleep(SLEEP);
-            messageBroker.produce(message);
+            messageBroker.produce(message, this);
         }
     }
 }

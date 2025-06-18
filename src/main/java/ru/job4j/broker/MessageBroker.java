@@ -12,11 +12,11 @@ import java.util.Queue;
 @ThreadSafe
 public class MessageBroker {
 
-    private static final String MESSAGE_PRODUCED = "Message: {} is produced! ";
-    private static final String MESSAGE_CONSUMER = "Message: {} is consumer! ";
+    private static final String MESSAGE_PRODUCED = "Message: {} is produced! Thread name is {} ! Amount of messages is {} ";
+    private static final String MESSAGE_CONSUMER = "Message: {} is consumer! Thread name is {} ! Amount of messages is {} ";
 
-    @GuardedBy("monitor")
     private final Queue<Message> messages;
+    @GuardedBy("monitor")
     private final Object monitor = new Object();
     @Getter
     private final int maxStoredMessages;
@@ -26,9 +26,9 @@ public class MessageBroker {
         this.maxStoredMessages = maxStoredMessages;
     }
 
-    public void produce(Message message) {
+    public void produce(Message message, final MessageProducing messageProducing) {
         synchronized (monitor) {
-            while (messages.size() >= maxStoredMessages) {
+            while (!this.isShouldProduce(messageProducing)) {
                 try {
                     monitor.wait();
                 } catch (InterruptedException e) {
@@ -36,14 +36,14 @@ public class MessageBroker {
                 }
             }
             this.messages.add(message);
-            log.info(MESSAGE_PRODUCED, message);
+            log.info(MESSAGE_PRODUCED, message, messageProducing.getName(), messages.size());
             monitor.notifyAll();
         }
     }
 
-    public Message consumer() {
+    public Message consumer(final MessageConsuming messageConsumer) {
         synchronized (monitor) {
-            while (messages.isEmpty()) {
+            while (!this.isShouldConsume(messageConsumer)) {
                 try {
                     monitor.wait();
                 } catch (InterruptedException e) {
@@ -51,10 +51,19 @@ public class MessageBroker {
                 }
             }
             Message message = this.messages.poll();
-            log.info(MESSAGE_CONSUMER, message);
+            log.info(MESSAGE_CONSUMER, message, messageConsumer.getName(), messages.size());
             monitor.notifyAll();
             return message;
         }
     }
 
+    private boolean isShouldConsume(final MessageConsuming messageConsumer) {
+        return !this.messages.isEmpty() && this.messages.size() >= messageConsumer.getMinimalMSGAmountToStart();
+    }
+
+    private boolean isShouldProduce(final MessageProducing messageProducing) {
+        return this.messages.size() < this.maxStoredMessages
+                && this.messages.size() <= messageProducing.getMinimumMSGToStartProduce();
+    }
 }
+
