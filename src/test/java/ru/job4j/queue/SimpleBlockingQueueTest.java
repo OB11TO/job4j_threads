@@ -2,8 +2,10 @@ package ru.job4j.queue;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
@@ -130,4 +132,53 @@ class SimpleBlockingQueueTest {
             fail("Ошибка при poll() последнего элемента");
         }
     }
+
+    @Test
+    public void whenFetchAllThenGetIt() {
+        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        CountDownLatch latch = new CountDownLatch(2);
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        Thread producer = new Thread(
+                () -> {
+                    IntStream.range(0, 5).forEach(elm -> {
+                        try {
+                            queue.offer(elm);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            fail("Producer был прерван");
+                        } finally {
+                            latch.countDown();
+                        }
+                    });
+                }
+        );
+        producer.start();
+        Thread consumer = new Thread(
+                () -> {
+                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                        try {
+                            buffer.add(queue.poll());
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            fail("Consumer был прерван");
+                        } finally {
+                            latch.countDown();
+                        }
+                    }
+                }
+        );
+        consumer.start();
+        try {
+            boolean completed = latch.await(1, TimeUnit.SECONDS);
+            assertThat(completed)
+                    .isTrue();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            fail("Тест прерван во время ожидания latch");
+        }
+        consumer.interrupt();
+        assertThat(buffer).containsExactly(0, 1, 2, 3, 4);
+    }
+
+
 }
