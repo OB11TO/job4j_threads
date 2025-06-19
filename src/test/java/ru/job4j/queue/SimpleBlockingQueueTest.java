@@ -1,6 +1,7 @@
 package ru.job4j.queue;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.core.queue.SimpleBlockingQueue;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;

@@ -1,6 +1,8 @@
 package ru.job4j.jcip;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.core.jcip.Count;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CountTest {

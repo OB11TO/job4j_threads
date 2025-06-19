@@ -1,6 +1,7 @@
 package ru.job4j.synch;
 
 import org.junit.jupiter.api.Test;
+import ru.job4j.core.synch.SingleLockList;
 
 import java.util.ArrayList;
 import java.util.Set;
