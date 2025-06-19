@@ -15,8 +15,8 @@ public class MessageBroker {
     private static final String MESSAGE_PRODUCED = "Message: {} is produced! Thread name is {} ! Amount of messages is {} ";
     private static final String MESSAGE_CONSUMER = "Message: {} is consumer! Thread name is {} ! Amount of messages is {} ";
 
-    private final Queue<Message> messages;
     @GuardedBy("monitor")
+    private final Queue<Message> messages;
     private final Object monitor = new Object();
     @Getter
     private final int maxStoredMessages;
@@ -58,12 +58,16 @@ public class MessageBroker {
     }
 
     private boolean isShouldConsume(final MessageConsuming messageConsumer) {
-        return !this.messages.isEmpty() && this.messages.size() >= messageConsumer.getMinimalMSGAmountToStart();
+        synchronized (monitor) {
+            return !this.messages.isEmpty() && this.messages.size() >= messageConsumer.getMinimalMSGAmountToStart();
+        }
     }
 
     private boolean isShouldProduce(final MessageProducing messageProducing) {
-        return this.messages.size() < this.maxStoredMessages
-                && this.messages.size() <= messageProducing.getMinimumMSGToStartProduce();
+        synchronized (monitor) {
+            return this.messages.size() < this.maxStoredMessages
+                    && this.messages.size() <= messageProducing.getMinimumMSGToStartProduce();
+        }
     }
 }
 
