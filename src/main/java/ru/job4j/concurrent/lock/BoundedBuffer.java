@@ -61,7 +61,7 @@ public class BoundedBuffer<T> {
             T element = buffer[size - 1];
             buffer[size - 1] = null;
             size--;
-            isFull .signal ();
+            isFull.signal();
             return element;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

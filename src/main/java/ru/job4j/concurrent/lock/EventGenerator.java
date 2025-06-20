@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 @Slf4j
 @Getter
 public class EventGenerator {
-    private int count = 0;
+    private int count;
     private final Lock lock = new ReentrantLock();
 
     public EventGenerator() {
@@ -25,7 +25,8 @@ public class EventGenerator {
             log.info("Interrupted {}", Thread.currentThread().getName());
         }
         try {
-           return this.count += 2;
+            count += 2;
+            return count;
         } finally {
             lock.unlock();
         }
@@ -35,7 +36,6 @@ public class EventGenerator {
         EventGenerator generator = new EventGenerator();
         Runnable runnable = () ->
                 IntStream.range(0, 100).forEach(i -> System.out.println(generator.increment()));
-        ;
         Thread thread1 = new Thread(runnable);
         Thread thread2 = new Thread(runnable);
         Thread thread3 = new Thread(runnable);

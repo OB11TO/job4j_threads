@@ -65,9 +65,8 @@ public class CountRunner {
         startThread(incrementThread1, incrementThread2, decrementThread1, decrementThread2);
         joinThread(incrementThread1, incrementThread2, decrementThread1, decrementThread2);
 
-        log.info("Counter - {}",countRunner.getCount());
+        log.info("Counter - {}", countRunner.getCount());
     }
-
 
     private static void joinThread(Thread... threads) {
         for (Thread thread : threads) {
