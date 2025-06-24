@@ -18,9 +18,12 @@ public final class PoolObject<T> {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         PoolObject<?> that = (PoolObject<?>) object;
         return issued == that.issued && Objects.equals(value, that.value);
     }

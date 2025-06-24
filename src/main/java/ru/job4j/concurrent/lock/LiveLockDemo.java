@@ -8,12 +8,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 public class LiveLockDemo {
-    private static final ReentrantLock lockA = new ReentrantLock();
-    private static final ReentrantLock lockB = new ReentrantLock();
+    private static final ReentrantLock LOCK_A = new ReentrantLock();
+    private static final ReentrantLock LOCK_B = new ReentrantLock();
 
     public static void main(String[] args) {
-        Runnable worker1 = () -> work(lockA, lockB);
-        Runnable worker2 = () -> work(lockB, lockA);
+            Runnable worker1 = () -> work(LOCK_A, LOCK_B);
+        Runnable worker2 = () -> work(LOCK_B, LOCK_A);
 
         new Thread(worker1, "W1").start();
         new Thread(worker2, "W2").start();

@@ -13,7 +13,6 @@ public final class ConnectionPool extends AbstractPool<Connection> {
         }
     }
 
-
     public ConnectionPool(int size) {
         super(new ConnectionSupplier(), size);
     }
