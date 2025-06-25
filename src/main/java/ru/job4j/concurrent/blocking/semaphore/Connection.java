@@ -1,4 +1,4 @@
-package ru.job4j.concurrent.semaphore;
+package ru.job4j.concurrent.blocking.semaphore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

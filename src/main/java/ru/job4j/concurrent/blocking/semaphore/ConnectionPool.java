@@ -1,20 +1,21 @@
-package ru.job4j.concurrent.semaphore;
+package ru.job4j.concurrent.blocking.semaphore;
 
 import java.util.function.Supplier;
 
 public final class ConnectionPool extends AbstractPool<Connection> {
 
+    public ConnectionPool(int size) {
+        super(new ConnectionSupplier(), size);
+    }
+
     private static final class ConnectionSupplier implements Supplier<Connection> {
-        private long nextConnectionId;
+
+        private int nextNumberId;
 
         @Override
         public Connection get() {
-            return new Connection(this.nextConnectionId++, true);
+            return new Connection(nextNumberId++, true);
         }
-    }
-
-    public ConnectionPool(int size) {
-        super(new ConnectionSupplier(), size);
     }
 
     @Override

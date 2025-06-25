@@ -1,4 +1,4 @@
-package ru.job4j.concurrent.semaphore;
+package ru.job4j.concurrent.blocking.semaphore;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,13 +47,8 @@ public abstract class AbstractPool<T> {
     }
 
     public final void release(T value) {
-        lock.lock();
-        try {
-            if (releaseObject(value)) {
-                semaphore.release();
-            }
-        } finally {
-            lock.unlock();
+        if (releaseObject(value)) {
+            semaphore.release();
         }
     }
 
