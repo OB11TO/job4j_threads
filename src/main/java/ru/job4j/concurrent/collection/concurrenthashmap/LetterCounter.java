@@ -23,7 +23,7 @@ public abstract class LetterCounter {
 
     private Stream<Subtask> createSubtasks(Map<Character, Integer> accumulator, String inputText) {
         int subtaskCharCount = findSubtaskCharCount(inputText);
-        return IntStream.range(0, subtaskCharCount).mapToObj(i -> createSubtasks(accumulator, inputText, subtaskCharCount, i));
+        return IntStream.range(0, subtaskCount).mapToObj(i -> createSubtasks(accumulator, inputText, subtaskCharCount, i));
     }
 
     private Subtask createSubtasks(Map<Character, Integer> accumulator, String inputText, int subtaskCharCount, int index) {
