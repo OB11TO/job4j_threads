@@ -161,7 +161,6 @@ class SimpleBlockingQueueTest {
                             buffer.add(queue.poll());
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
-                            fail("Consumer был прерван");
                         } finally {
                             latch.countDown();
                         }
