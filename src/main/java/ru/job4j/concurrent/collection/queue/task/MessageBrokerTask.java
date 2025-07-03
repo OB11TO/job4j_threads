@@ -14,7 +14,6 @@ public abstract class MessageBrokerTask<T> implements Runnable {
         this.secondTimeout = secondTimeout;
     }
 
-
     @Override
     public void run() {
         try {
