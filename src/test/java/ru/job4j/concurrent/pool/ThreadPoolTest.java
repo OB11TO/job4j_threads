@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ThreadPoolTest {
 
@@ -25,11 +25,11 @@ class ThreadPoolTest {
     }
 
     @Test
-    void whenSubmitSingleTask_thenItExecutes() throws InterruptedException {
+    void whenSubmitSingleTaskThenItExecutes() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
         pool.work(latch::countDown);
-        boolean completed = latch.await(2, TimeUnit.SECONDS);
+        boolean completed = latch.await(2L, TimeUnit.SECONDS);
 
         assertThat(completed)
                 .as("Задача должна выполниться в пуле потоков")
@@ -37,7 +37,7 @@ class ThreadPoolTest {
     }
 
     @Test
-    void whenSubmitMultipleTasks_thenAllExecute() throws InterruptedException {
+    void whenSubmitMultipleTasksThenAllExecute() throws InterruptedException {
         int tasksCount = 10;
         CountDownLatch latch = new CountDownLatch(tasksCount);
         AtomicInteger counter = new AtomicInteger();
@@ -48,7 +48,7 @@ class ThreadPoolTest {
                 latch.countDown();
             });
         }
-        boolean completed = latch.await(5, TimeUnit.SECONDS);
+        boolean completed = latch.await(5L, TimeUnit.SECONDS);
 
         assertThat(completed)
                 .as("Все задачи должны выполниться в пуле потоков")
@@ -63,9 +63,9 @@ class ThreadPoolTest {
         CountDownLatch latch = new CountDownLatch(1);
 
         pool.shutdown();
+        TimeUnit.SECONDS.sleep(1L);
         pool.work(latch::countDown);
-
-        boolean completed = latch.await(500, TimeUnit.MILLISECONDS);
+        boolean completed = latch.await(1L, TimeUnit.SECONDS);
 
         assertThat(completed)
                 .as("После shutdown задачи не должны выполняться")
