@@ -4,6 +4,7 @@ import ru.job4j.core.queue.SimpleBlockingQueue;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ThreadPool {
@@ -20,7 +21,7 @@ public class ThreadPool {
         return IntStream.range(0, nucleiNumber)
                 .mapToObj(i -> new Thread(this::createTask, "Thread - " + i))
                 .peek(Thread::start)
-                .collect(LinkedList::new, List::add, List::addAll);
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     private void createTask() {
