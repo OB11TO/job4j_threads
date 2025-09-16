@@ -1,5 +1,6 @@
 package ru.job4j.concurrent.future;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,9 +9,17 @@ import java.util.concurrent.TimeUnit;
 
 public class ExampleTaskFuture {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         executorServiceWithoutTry();
         executorServiceWithTry();
+        Runnable task = () -> System.out.println("Hello world");
+        Callable<?> task2 = () -> "Hello World";
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<?> future = executorService.submit(task);
+        Future<?> future2 = executorService.submit(task2);
+        Object o = future.get();
+        Object o2 = future2.get();
+        executorService.shutdown();
     }
 
 
