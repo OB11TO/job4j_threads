@@ -20,6 +20,11 @@ public record Area(Coordinate leftBottom, Coordinate rightUpper) {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(leftBottom, rightUpper);
+    }
+
+    @Override
     public String toString() {
         return getClass().getName() + "[leftBottom = " + leftBottom + ", rightUpper = " + rightUpper + "]";
     }

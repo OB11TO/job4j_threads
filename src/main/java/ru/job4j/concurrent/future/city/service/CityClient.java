@@ -6,7 +6,6 @@ import ru.job4j.concurrent.future.city.model.Coordinate;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-
 public final class CityClient {
     private static final long SECOND_TIMEOUT = 1;
     private static final long MIN_ID = 0;

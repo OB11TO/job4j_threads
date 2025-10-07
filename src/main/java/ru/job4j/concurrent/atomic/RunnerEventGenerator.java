@@ -23,6 +23,7 @@ public class RunnerEventGenerator {
         }
 
     }
+
     private static void waitUtilityFinish(Thread[] threads) {
         Arrays.stream(threads).forEach(RunnerEventGenerator::waitUtilityFinish);
     }

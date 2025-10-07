@@ -22,7 +22,6 @@ public class ExampleTaskFuture {
         executorService.shutdown();
     }
 
-
     private static void executorServiceWithTry() {
         /*
                             Java 24 version

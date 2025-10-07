@@ -4,10 +4,11 @@ public final class MyUtilityClass {
 
     private static long nextId = 4L;
 
-    private MyUtilityClass(){}
+    private MyUtilityClass() {
+    }
 
     public static String returnUpperCase(String stringInput) {
-        nextId = 5l;
+        nextId = 5L;
         return stringInput.toUpperCase();
     }
 

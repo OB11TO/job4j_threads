@@ -8,12 +8,12 @@ public class FailSafeDemo {
         // failSafeHashMap();
         failSafeCopyOnWriteArrayList();
 
-       // failFastArrayList();
-       // failFastHashMap();
+        // failFastArrayList();
+        // failFastHashMap();
     }
 
     private static void failSafeCopyOnWriteArrayList() {
-        CopyOnWriteArrayList<String> cow = new CopyOnWriteArrayList<>(new String[]{"A","B"});
+        CopyOnWriteArrayList<String> cow = new CopyOnWriteArrayList<>(new String[]{"A", "B"});
         for (String s : cow) {
             System.out.println("iter: " + s);
             cow.add("C"); // не бросит, но текущий итератор не увидит "C"
@@ -21,7 +21,6 @@ public class FailSafeDemo {
         }
         System.out.println("final: " + cow); // содержит C D C D
     }
-
 
     private static void failFastHashMap() {
         Map<Integer, String> map = new HashMap<>();

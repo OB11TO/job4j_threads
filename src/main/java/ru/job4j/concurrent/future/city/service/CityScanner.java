@@ -43,8 +43,6 @@ public class CityScanner {
                 .map(FutureUtil::get)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
-
-
     }
 
     private List<Coordinate> getTaskCoordinates(final List<Coordinate> coordinates, final int taskIndex) {
@@ -52,7 +50,6 @@ public class CityScanner {
         final int toIndex = min(TASK_POINT_COUNT * (taskIndex + 1), coordinates.size());
         return coordinates.subList(fromIndex, toIndex);
     }
-
 
     private int countTasks(final List<Coordinate> coordinates) {
         return (int) ceil(((double) coordinates.size()) / TASK_POINT_COUNT);

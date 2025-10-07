@@ -6,7 +6,6 @@ import ru.job4j.concurrent.future.city.model.Coordinate;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-
 public class AreaIterator implements Iterator<Coordinate> {
 
     private static final double STEP = 0.5;

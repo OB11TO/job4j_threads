@@ -20,6 +20,11 @@ public record City(Long id) {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
     public String toString() {
         return getClass() + "[id = " + id + "]";
     }

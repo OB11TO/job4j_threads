@@ -31,7 +31,9 @@ public class SumCountedCompleterFixed extends CountedCompleter<Long> {
         if (len <= THRESHOLD) {
             // листовая задача
             long s = 0;
-            for (int i = lo; i < hi; i++) s += arr[i];
+            for (int i = lo; i < hi; i++) {
+                s += arr[i];
+            }
             this.result = s;
             setRawResult(s);
             log("LEAF [" + lo + "," + hi + ") sum=" + s + " -> tryComplete()");
@@ -69,7 +71,9 @@ public class SumCountedCompleterFixed extends CountedCompleter<Long> {
     public static void main(String[] args) {
         int n = 2000;
         long[] arr = new long[n];
-        for (int i = 0; i < n; i++) arr[i] = ThreadLocalRandom.current().nextInt(1, 10);
+        for (int i = 0; i < n; i++) {
+            arr[i] = ThreadLocalRandom.current().nextInt(1, 10);
+        }
 
         SumCountedCompleterFixed root = new SumCountedCompleterFixed(null, arr, 0, arr.length);
         try (ForkJoinPool pool = ForkJoinPool.commonPool()) {

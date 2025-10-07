@@ -3,8 +3,6 @@ package ru.job4j;
 public class Test {
     public static final String BBB = "FF";
 
-
-
     public static void main(String[] args) {
 //        methodDemoWithPolimorhizm();
 //        int a = 4324;
@@ -12,7 +10,6 @@ public class Test {
 //        OuterClass.StaticInnerClass inner = new OuterClass.StaticInnerClass();
 //        inner.printStaticMember(); // Вывод: I am static
 //        procentOtDelete();
-
 
     }
 
@@ -47,6 +44,7 @@ public class Test {
         whale2.printColor();
     }
 }
+
 class Cow {
     public void printAll() {
         printColor();
@@ -71,7 +69,6 @@ class Whale extends Cow {
         System.out.println("Я - кит");
     }
 }
-
 
 class City {
 
