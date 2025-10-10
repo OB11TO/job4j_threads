@@ -10,7 +10,7 @@ public class DedicatedExecutorExample {
     // Создаем пул потоков специально для блокирующих IO-операций
     private static final ExecutorService IO_EXECUTOR = Executors.newFixedThreadPool(10, r -> {
         Thread t = new Thread(r);
-        t.setName("io-pool-thread-" + t.threadId());
+        t.setName("io-pool-thread-" + Thread.currentThread().getId());
         // Демон-потоки не мешают JVM завершиться
         t.setDaemon(true);
         return t;
