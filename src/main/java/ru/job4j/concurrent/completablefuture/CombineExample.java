@@ -12,7 +12,6 @@ public class CombineExample {
                 .thenCombine(CompletableFuture.supplyAsync(() -> "ff"), (result, other) -> result + " " + other);
         stringCompletableFuture.thenAccept(System.out::println);
 
-
         CompletableFuture<String> userNameFuture = CompletableFuture.supplyAsync(() -> {
             System.out.println("Getting user name in " + Thread.currentThread().getName());
             try {

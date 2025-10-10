@@ -42,7 +42,6 @@ public class AllOfAnyOfExample {
         List<String> results = allResultsFuture.join();
         System.out.println("All results: " + results);
 
-
         // --- anyOf Example ---
         System.out.println("\n--- anyOf: Waiting for the first future to complete ---");
         CompletableFuture<String> future1 = createFuture("Fast", 1);
