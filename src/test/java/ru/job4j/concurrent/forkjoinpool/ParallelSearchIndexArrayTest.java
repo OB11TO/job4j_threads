@@ -9,7 +9,6 @@ import static ru.job4j.concurrent.forkjoinpool.ParallelSearchIndexArray.invokeSe
 
 public class ParallelSearchIndexArrayTest {
 
-
     @Test
     void smallArrayIntegerFoundAtStart() {
         Integer[] array = {1, 2, 3, 4, 5};
