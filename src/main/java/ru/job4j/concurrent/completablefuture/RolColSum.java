@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
@@ -43,15 +45,18 @@ public class RolColSum {
     }
 
     public static Sums[] asyncSum(int[][] matrix) {
-        return IntStream.range(0, matrix.length)
+        List<CompletableFuture<Sums>> futures = IntStream.range(0, matrix.length)
                 .mapToObj(i -> CompletableFuture.supplyAsync(() -> {
-                            int rowMatrixSum = getRowMatrixSum(matrix, i);
-                            int colMatrixSum = getColMatrixSum(matrix, i);
-                            return new Sums(rowMatrixSum, colMatrixSum);
-                        }
-                ))
-                .map(CompletableFuture::join)
-                .toArray(Sums[]::new);
+                    int rowSum = getRowMatrixSum(matrix, i);
+                    int colSum = getColMatrixSum(matrix, i);
+                    return new Sums(rowSum, colSum);
+                }))
+                .toList();
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> futures.stream()
+                        .map(CompletableFuture::join)
+                        .toArray(Sums[]::new))
+                .join();
     }
 
     private static int getRowMatrixSum(int[][] matrix, int i) {
