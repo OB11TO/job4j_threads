@@ -3,16 +3,12 @@ package ru.job4j.concurrent.forkjoinpool;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
-import java.util.concurrent.ForkJoinPool;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.job4j.concurrent.forkjoinpool.ParallelSearchIndexArray.invokeSearch;
 
 public class ParallelSearchIndexArrayTest {
 
-    private <T> int invokeSearch(T[] array, T target) {
-        ParallelSearchIndexArray<T> task = new ParallelSearchIndexArray<>(array, target, 0, array.length);
-        return ForkJoinPool.commonPool().invoke(task);
-    }
 
     @Test
     void smallArrayIntegerFoundAtStart() {
